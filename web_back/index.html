@@ -53,7 +53,7 @@
     </div>
 
 
-
+    <!-- 额外的一些事件 -->
     <script>
         var $level01 = $('.level01');
         var $subli = $('.level02 li')
@@ -103,6 +103,28 @@
         }
 
     </script>
+     
 
+     <script>
+      //入口函数
+      $(function () {
+          //需求  退出登录
+          //1.给退出的a标签设置点击事件
+          $('.icon-tuichu').parent().on('click',function (e) {
+              e.preventDefault()//阻止a标签的默认跳转
+          //2.打死ajax请求,退出
+             $.ajax({
+             type:'post',
+             url:"http://localhost:8000/admin/logou",
+             success: function(backData){
+          //3.成功就调回到登录页面
+             if(backData.code == 200){
+               window.location.href = "login.html";
+             } 
+             }
+             }); 
+          });
+      });
+     </script>
 </body>
 </html>
