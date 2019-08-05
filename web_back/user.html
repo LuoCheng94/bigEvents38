@@ -130,6 +130,8 @@
                                 url: 'http://localhost:8080/admin/user/info',
                                 success: function (backData) {
                                     if (backData.code == 200) {
+                                        console.log(backData);
+                                        // console.log(parent);
                                         // ​2.把对应的信息显示在页面的对象标签上.
                                         parent.$('.user_info>span').html(
                                             '欢迎&nbsp;&nbsp;' + backData.data
