@@ -143,7 +143,7 @@
                 <td>{{v.slug}}</td>
                 <td class="text-center">
                     <a href="#" data-id="{{v.id}}" class="btn btn-info btn-xs">编辑</a>
-                    <a href="#" data-id="{{v.id}}" class="btn btn-danger btn-xs btn-delete">删除</a>
+                    <a href="#" data-id="{{v.id}}" class="btn btn-danger   btn-xs btn-delete">删除</a>
                 </td>
             </tr>
             {{/each}}
@@ -151,22 +151,22 @@
     <script>
         //入口函数
         $(function () {
-            function  getCataData() {
+            function getCataData() {
                 $.ajax({
-                type: 'get',
-                url: 'http://localhost:8080/admin/category/list',
-                success: function (backData) {
-                    console.log(backData);
-                    // 2.把这些文章分类信息, 通过模板引擎渲染到页面上.
-                    //调用模板引擎核心方法
-                    var resHtml = template('tmp_artCate', backData);
-                    $('tbody').html(resHtml);
-                }
-            });
+                    type: 'get',
+                    url: 'http://localhost:8080/admin/category/list',
+                    success: function (backData) {
+                        console.log(backData);
+                        // 2.把这些文章分类信息, 通过模板引擎渲染到页面上.
+                        //调用模板引擎核心方法
+                        var resHtml = template('tmp_artCate', backData);
+                        $('tbody').html(resHtml);
+                    }
+                });
             }
             //需求:一进到页面就显示所有文章分类信息
             // 1.一进到文章分类页面,发送ajax请求, 获取所有的文章分类信息.
-             getCataData();
+            getCataData();
 
 
             //需求:完成文章类别新增
@@ -177,38 +177,76 @@
                 var cateName = $('#recipient-name').val();
                 var slugName = $('#recipient-slug').val();
                 // 3.发送ajax请求,完成新增
-                 $.ajax({
-                 type:'post',
-                 url:' http://localhost:8080/admin/category/add',
-                 data:{
-                     name:cateName,
-                     slug:slugName
-                 },
-                 success: function(backData){
-                     if (backData == 201) {
-                         alert('新增成功');
-                     }
-                     //新增成功重新发送ajax请求来渲染新的数据
-                getCataData();
-                //新增成功后把文本输入框的内容清空
-                $('#recipient-name').val("");
-                $('#recipient-slug').val("");
-                 }
-                 });
-                    //完成新增后要手动隐藏模态框
-                    $('#addModal').modal('hide');
+                $.ajax({
+                    type: 'post',
+                    url: ' http://localhost:8080/admin/category/add',
+                    data: {
+                        name: cateName,
+                        slug: slugName
+                    },
+                    success: function (backData) {
+                        if (backData == 201) {
+                            alert('新增成功');
+                        }
+                        //新增成功重新发送ajax请求来渲染新的数据
+                        getCataData();
+                        //新增成功后把文本输入框的内容清空
+                        $('#recipient-name').val("");
+                        $('#recipient-slug').val("");
+                    }
                 });
-            })
-            // ​ 我们发现新增按钮之前有点击事件. 那我们应该把它删掉.我们自己来写
+                //完成新增后要手动隐藏模态框
+                $('#addModal').modal('hide');
+            });
 
 
 
 
-        
+
+
+               // 需求:文章分类删除
+//  1.把模板引擎中的删除按钮自带的点击事件给删除,因为我们要自己来写.
+
+// 2.删除按钮是动态生成的,所以要委托注册.
+  $('tbody').on('click','a.btn-delete',function () {
+       if (confirm('你确认要删除吗?')) {
+           // 3.通过点击的当前删除按钮的自定义属性data-id,获取你要删除的文章类型的id
+         var id = $(this).attr('data-id');
+// 4.发送ajax请求完成删除
+   $.ajax({
+   type:'post',
+   url:'http://localhost:8080/admin/category/delete',
+   data:{
+       id:id,
+
+   },
+   success: function(backData){
+       if (backData.code == 204) {
+// ​4.1重新渲染数据
+           getCataData();
+// 4.2直接操作dom树
+       }
+   }
+   });
+       }
+  })
 
 
 
-// ​       把id也保存起来了
+
+
+
+
+
+
+        })
+
+
+
+
+
+
+
     </script>
 </body>
 

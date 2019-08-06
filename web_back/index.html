@@ -170,9 +170,11 @@
                 success: function(backData) {
                     if (backData.code == 200) {
                         //2.把对应的信息显示在页面的对象标签上
+                        console.log(backData);
+                        console.log(backData.data.userPic);
                         $('.user_info>span').html('欢迎&nbsp;&nbsp;' + backData.data.nickname);
-                        $('.user_info>img').attr('src',backData.data.userpic);
-                        $('.user_center_link>img').attr('src',backData.data.userpic);
+                        $('.user_info>img').attr('src',backData.data.userPic);
+                        $('.user_center_link>img').attr('src',backData.data.userPic);
                     }
                 }
             })
